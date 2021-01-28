@@ -1,9 +1,10 @@
 .form,
-.greetings {
+.greeting 
+{
     display: none;
 }
 
-.showing {
+.showing
+{
     display: block;
 }
-
