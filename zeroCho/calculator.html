@@ -132,11 +132,27 @@
 
         const onClickOperator = (op) => {
             return () => {
-                if(numOne){
-                    operator = op;
-                    $operator.value = op;
+                if(numOne && operator && numTwo){
+                    if(operator === '+'){
+                        $result.value = parseInt(numOne) + parseInt(numTwo)
+                    } else if(operator === '-'){
+                        $result.value = numOne - numTwo
+                    } else if (operator === '*'){
+                        $result.value = numOne * numTwo
+                    } else if(operator === '/'){
+                        $result.value = numOne / numTwo
+                    }
+                    numOne = $result.value
+                    numTwo = ''
+                    operator = op
+                    $operator.value = op 
                 } else {
-                    alert('숫자를 먼저 입력하세요.');
+                    if(numOne){
+                        operator = op;
+                        $operator.value = op;
+                    } else {
+                        alert('숫자를 먼저 입력하세요.');
+                    }
                 }
             }
         }
@@ -144,8 +160,38 @@
         document.querySelector('#minus').addEventListener('click', onClickOperator('-'));
         document.querySelector('#divide').addEventListener('click', onClickOperator('/'));
         document.querySelector('#multiply').addEventListener('click', onClickOperator('*'));
-        document.querySelector('#calculate').addEventListener('click', () => {});
-        document.querySelector('#clear').addEventListener('click', () => {});
+        document.querySelector('#calculate').addEventListener('click', () => {
+            if(numTwo){
+                switch(operator){
+                    case '+':
+                        $result.value = parseInt(numOne) + parseInt(numTwo)
+                        break
+                    case '-':
+                        $result.value = numOne - numTwo
+                        break
+                    case '*':
+                        $result.value = numOne * numTwo
+                        break
+                    case '/':
+                        $result.value = numOne / numTwo
+                    default:
+                        break
+                }
+                numOne = $result.value
+                numTwo = ''
+                operator = ''
+                $operator.value = ''
+            } else {
+                alert('숫자를 입력하세요')
+            }
+        });
+        document.querySelector('#clear').addEventListener('click', () => {
+            numOne = ''
+            numTwo = ''
+            operator = ''
+            $operator.value = ''
+            $result.value = ''
+        });
     </script>
 </body>
 
