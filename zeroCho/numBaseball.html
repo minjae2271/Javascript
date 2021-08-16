@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form id="form">
+        <!-- input 존재 시 웬만하면 form 있음 -->
+        <input id="input" type="text">
+        <button>확인</button>
+        <div id="logs"></div>
+    </form>
+    <script>
+        const $form = document.querySelector("#form");
+        const $input = document.querySelector("#input");
+        const $logs = document.querySelector("#logs");
+
+        let out = 0;
+        const numbers = [];
+        for(let i=0; i<9; i++){
+            numbers.push(i+1);
+        }
+        const answer = [];
+        for(let i=0; i<4; i++){
+            const index = Math.floor(Math.random() * numbers.length);
+            answer.push(numbers[index]);
+            numbers.splice(index,1);
+        }
+        console.log(answer);
+        const tries = [];
+        function checkInput(input) {
+            if(input.length !== 4){
+                return alert('4자리를 입력해주세요.');
+            }
+            if(new Set(input).size !== 4){
+                return alert('숫자가 중복되지 ㅇ낳게 입력해주세요.');
+            }
+            if(tries.includes(input)){
+                return alert('이미 시도한 값입니다.');
+            }
+            return true;
+        }
+        $form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const value = $input.value;
+            $input.value ='';
+            const valid = checkInput(value);
+            if(valid){
+                //홈런!
+                if(value === answer.join('')){
+                    $logs.innerHTML = $logs.innerHTML + "홈런!<br/>";
+                    return
+                }
+                //기회 다 썼을 때
+                if(tries.length >= 9){
+                    const message = document.createTextNode(`패배! 정답은 ${answer.join('')}`);
+                    $logs.appendChild(message);
+                    return
+                }
+                tries.push(value);
+                console.log(tries);
+                //strike, ball
+                let strike = 0;
+                let ball = 0;
+                for(let i=0; i<4; i++){
+                    // i => 현재 index 위치
+                    // index => 매치된 위치
+                    const index = value.indexOf(answer[i]);
+                    if(index > -1){
+                        if(i === index){
+                            strike +=1
+                        } else {
+                            ball +=1
+                        }
+                    }
+                }
+                if(strike ===0 && ball ===0){
+                    out++
+                    $logs.append(`${value} 아웃`, document.createElement('br'));
+                } else {
+                    $logs.append(`${value} : ${strike} Strike, ${ball} Ball`, document.createElement('br'));
+                }
+                if(out ===3){
+                    $logs.append(`삼진아웃 패배! 정답은 ${answer.join('')}`)
+                }
+                tries.push(value);
+            }
+        })
+
+    </script>
+</body>
+</html>
