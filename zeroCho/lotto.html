@@ -8,5 +8,28 @@
 </head>
 <body>
     
+    <script>
+        const candid = new Array(45).fill().map((v,i) => i+1);
+        console.log(candid);
+
+        // const shuffle = [];
+        // while(candid.length > 0){
+        //     const random = Math.floor(Math.random() * candid.length);
+        //     const spliceArray = candid.splice(random, 1);
+        //     const value = spliceArray[0];
+        //     shuffle.push(value);
+        // }
+        // console.log(shuffle);
+
+        const shuffle = [];
+        for(let i = candid.length; i>0; i--){
+            const random = Math.floor(Math.random() * i);
+            const spliceArray = candid.splice(random, 1);
+            const value = spliceArray[0];
+            shuffle.push(value);
+        }
+        console.log(shuffle);
+
+    </script>
 </body>
 </html>
