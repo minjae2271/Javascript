@@ -7,8 +7,16 @@
     <title>Document</title>
 </head>
 <body>
-    
+    <div id="result">
+        당첨 :
+    </div>
+    <div id="bonus">
+        보너스 :
+    </div>
     <script>
+        const $result = document.querySelector('#result');
+        const $bonus = document.querySelector('#bonus');
+
         const candid = new Array(45).fill().map((v,i) => i+1);
         console.log(candid);
 
@@ -29,9 +37,36 @@
             shuffle.push(value);
         }
         console.log(shuffle);
+        //lotto balls
         const winBalls = shuffle.slice(0,6).sort((a,b) => a-b);
         console.log(winBalls);
+        //bonus
+        const bonusBall = shuffle.slice(6,7);
+        console.log(bonusBall);
 
+        function makeBall(gubun,num) {
+            const $ball = document.createElement('div');
+            $ball.className = gubun;
+            
+            if(gubun === 'ball'){
+                $ball.textContent = `${winBalls[num]}`;
+                $result.append($ball);
+            } else {
+                $ball.textContent = `${bonusBall[num]}`;
+                $bonus.appendChild($ball);
+            }
+        }
+
+        for(let i=0; i<=winBalls.length; i++){
+            setTimeout(() => {
+                makeBall('ball',i)
+            }, (i+1)*1000);
+            if(i === winBalls.length){
+                setTimeout(() => {
+                    makeBall('bonus',0)
+                }, 7);
+            }
+        }
     </script>
 </body>
 </html>
