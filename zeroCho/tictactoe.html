@@ -30,6 +30,48 @@
         const $table = document.createElement('table');
         const $result = document.createElement('div');
 
+        const win = (e) => {
+            let nowRow;
+            let nowCol;
+
+            row.forEach((r, ri) => {
+                r.forEach((c, ci) => {
+                    if(row[ri][ci] === e.target){
+                        nowRow = ri;
+                        nowCol = ci;
+                        console.log(nowRow,nowCol);
+                    }
+                });
+            });
+            let winFlag = false;
+
+            //horizontal
+            if(row[nowRow][0].textContent === turn &&
+                row[nowRow][1].textContent === turn &&
+                row[nowRow][2].textContent === turn){
+                    winFlag = true;
+            }
+            //vertical
+            if(row[0][nowCol].textContent === turn &&
+                row[1][nowCol].textContent === turn &&
+                row[2][nowCol].textContent === turn){
+                    winFlag = true;
+                    console.log(winFlag);
+                }
+            //diagonal
+            if(row[0][0].textContent === turn &&
+                row[1][1].textContent === turn &&
+                row[2][2].textContent === turn ){
+                    winFlag = true;
+            }
+            if(row[0][2].textContent === turn &&
+                row[1][1].textContent === turn &&
+                row[2][0].textContent === turn ){
+                    winFlag = true;
+            }
+            return winFlag;
+        };
+
         const callBack = (e) => {
                     //blank?
                     if(e.target.textContent){
@@ -37,6 +79,12 @@
                         return;
                     }
                     e.target.textContent = turn;
+                    //win?
+                    if(win(e)){
+                        console.log(`${turn} win`);
+                        return;
+                    }
+                    //draw?
                     //turn change
                     turn = turn === 'O' ? 'X' : 'O'
                     // if(turn === 'O'){
