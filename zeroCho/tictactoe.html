@@ -72,6 +72,10 @@
             return winFlag;
         };
 
+        const draw = () => {
+            return row.flat().every((ele) => ele.textContent);
+        }
+
         const callBack = (e) => {
                     //blank?
                     if(e.target.textContent){
@@ -82,9 +86,14 @@
                     //win?
                     if(win(e)){
                         console.log(`${turn} win`);
+                        $table.removeEventListener('click', callBack);
                         return;
                     }
                     //draw?
+                    if(draw()){
+                        console.log('Draw');
+                        return
+                    }
                     //turn change
                     turn = turn === 'O' ? 'X' : 'O'
                     // if(turn === 'O'){
@@ -100,13 +109,13 @@
 
             for(let j=0; j<3; j++){
                 const $td = document.createElement('td');
-                $td.addEventListener('click', callBack);
                 $tr.append($td);
                 cells.push($td)
             }
             $table.append($tr);
             row.push(cells);
         }
+        $table.addEventListener('click', callBack);
         document.body.append($table);
         document.body.append($result);
     </script>
