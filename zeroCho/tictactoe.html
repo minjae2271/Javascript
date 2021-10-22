@@ -98,12 +98,29 @@
                     turn = turn === 'O' ? 'X' : 'O';
 
                     emptyCells = row.flat().filter((ele) => !ele.textContent);
-                    
-                    pickEmptyCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-                    pickEmptyCell.textContent = turn;
 
-                    //turn change
-                    turn = turn === 'O' ? 'X' : 'O';
+                    if(turn === 'X'){
+                        console.log('computer');
+                        pickEmptyCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+                        pickEmptyCell.textContent = 'X';
+
+                        //win?
+                        if(win(e)){
+                            console.log(`${turn} win`);
+                            $table.removeEventListener('click', callBack);
+                            return;
+                        }
+                        //draw?
+                        if(draw()){
+                            console.log('Draw');
+                            return
+                        }
+
+                        //turn change
+                        turn = turn === 'O' ? 'X' : 'O';
+                    }
+                    
+                    
 
 
                 };
