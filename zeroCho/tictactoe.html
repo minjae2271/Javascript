@@ -34,7 +34,7 @@
             const nowRow = target.parentNode.rowIndex;
             const nowCol = target.cellIndex;
 
-            console.log("row: ", nowRow, "col: ", nowCol)
+            // console.log("row: ", nowRow, "col: ", nowCol)
             // row.forEach((r, ri) => {
             //     r.forEach((c, ci) => {
             //         if(row[ri][ci] === e.target){
@@ -69,7 +69,7 @@
                 row[2][0].textContent === turn ){
                     winFlag = true;
             }
-            console.log(winFlag)
+            // console.log(winFlag)
             return winFlag;
         };
 
@@ -77,53 +77,44 @@
             return row.flat().every((ele) => ele.textContent);
         }
 
+        const checkWinAndTurnChange = (target) => {
+            //win?
+            if(win(target)){
+                console.log(`${turn} win`);
+                $table.removeEventListener('click', callBack);
+                return;
+            }
+            //draw?
+            if(draw()){
+                console.log('Draw');
+                return
+            }
+            //turn change
+            turn = turn === 'O' ? 'X' : 'O';
+        }
+
+        let clickable = true;
         const callBack = (e) => {
-                    //blank?
-                    if(e.target.textContent){
-                        console.log("Already selected");
-                        return;
-                    }
-                    e.target.textContent = turn;
-                    //win?
-                    if(win(e.target)){
-                        console.log(`${turn} win`);
-                        $table.removeEventListener('click', callBack);
-                        return;
-                    }
-                    //draw?
-                    if(draw()){
-                        console.log('Draw');
-                        return
-                    }
-                    //turn change
-                    turn = turn === 'O' ? 'X' : 'O';
-
-                    emptyCells = row.flat().filter((ele) => !ele.textContent);
-
-                    if(turn === 'X'){
-                        console.log('computer');
-                        pickEmptyCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-                        pickEmptyCell.textContent = 'X';
-
-                        //win?
-                        if(win(pickEmptyCell)){
-                            console.log(`${turn} win`);
-                            $table.removeEventListener('click', callBack);
+                    if(clickable){
+                        //blank?
+                        if(e.target.textContent){
+                            console.log("Already selected");
                             return;
                         }
-                        //draw?
-                        if(draw()){
-                            console.log('Draw');
-                            return
-                        }
-
-                        //turn change
-                        turn = turn === 'O' ? 'X' : 'O';
+                        e.target.textContent = turn;
+                        checkWinAndTurnChange(e.target);
                     }
                     
-                    
-
-
+                    clickable = false;
+                    setTimeout(() => {
+                        if(turn === 'X'){
+                            emptyCells = row.flat().filter((ele) => !ele.textContent);
+                            pickEmptyCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+                            pickEmptyCell.textContent = 'X';
+                            checkWinAndTurnChange(pickEmptyCell)
+                        }
+                        clickable = true;
+                    }, 1000);
                 };
 
         for(let i=0; i<3; i++){
