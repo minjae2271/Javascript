@@ -7,29 +7,84 @@
     <title>Document</title>
 </head>
 <body>
-    <form id="userNameForm">
+    <form id="user-name-form">
         <input id="userName" name="userName" type="text" placeholder="캐릭터 이름을 입력해 주세요.">
         <input type="submit" value="시작하기">
     </form>
-    <div id="screen" style="display: none;">
-        <div id="stat">
-            <span id="charName"></span>
+    <div id="screen">
+        <div id="char-stat">
+            <span id="char-name"></span>
+            <span id="char-level"></span>
+            <span id="char-hp"></span>
+            <span id="char-xp"></span>
+            <span id="char-att"></span>
+        </div>
+        <form id="game-menu" style="display: none;">
+            <div id="menu-1">1. 모험</div>
+            <div id="menu-2">2. 휴식</div>
+            <div id="menu-2">3. 종료</div>
+            <input id="menu-input" type="text">
+            <button id="menu-botton">입력</button>
+        </form>
+        <form id="battle-menu" style="display: none;">
+            <div id="battle-1">1.공격</div>
+            <div id="battle-2">2.회복</div>
+            <div id="battle-3">3.도망</div>
+            <input id="battle-input" />
+            <button id="battle-button">입력</button>
+        </form>
+        <div id="message"></div>
+        <div id="monster-stat">
+            <span id="monster-name"></span>
+            <span id="monster-hp"></span>
+            <span id="monster-att"></span>
         </div>
     </div>
 
     <script>
-        const $userNameForm = document.querySelector('#userNameForm');
+        const $userNameForm = document.querySelector('#user-name-form');
         const $screen = document.querySelector('#screen');
-        const $charName = document.querySelector('#charName');
+        const $charName = document.querySelector('#char-name');
+        const $charStat = document.querySelector('#char-stat');
+        const $charLevel = document.querySelector('#char-level');
+        const $charHp = document.querySelector('#char-hp');
+        const $charXp = document.querySelector('#char-xp');
+        const $charAtt = document.querySelector('#char-att');
+        const $gameMenu = document.querySelector('#game-menu');
+        const $monsterName = document.querySelector('#monster-name');
+        const $monsterHp = document.querySelector('#monster-hp');
+        const $monsterAtt = document.querySelector('#monster-att');
+        const $message = document.querySelector('#message');
+
+        const heroInitialStat = {
+            name: '',
+            lev: 1,
+            maxHp: 10,
+            hp: 10,
+            xp: 0,
+            att: 10,
+        };
+
+        let monster = null;
+
+        const monsterList = [
+            { name: "Godzila", hp:300, xp:50, att:10},
+            { name: "pennywise", hp:100, xp:30, att:10},
+            { name: "mushmom", hp:500, xp:100, att:20},
+        ]
 
         $userNameForm.addEventListener('submit', (e) => {
             e.preventDefault();
             // console.log(e.target['userName'].value);
             const name = e.target['userName'].value;
             $charName.textContent = name;
+            // $charLevel.textContent = heroInitialStat.lev;
+            $charLevel.textContent = `${heroInitialStat.lev}Lv.`;
+            $charHp.textContent = `HP : ${heroInitialStat.hp}/${heroInitialStat.maxHp}`;
+            $charXp.textContent = `XP : ${heroInitialStat.xp}/${15 * heroInitialStat.lev}`;
 
             $userNameForm.style.display = 'none';
-            $screen.style.display = 'block';
+            $gameMenu.style.display = 'block';
         });
         
     </script>
