@@ -71,3 +71,16 @@ var object2 = {
     }
 }
 object2.func1();
+
+//4.apply 메서드
+function Person(name, age, gender) {
+    this.name = name;
+    this.age = age;
+    this.gender = gender;
+}
+
+var foo = {};
+
+//apply method 호출
+Person.apply(foo, ['foo', 30, 'man']);
+console.dir(foo);
